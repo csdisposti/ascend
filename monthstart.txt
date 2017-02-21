@@ -1,0 +1,60 @@
+n
+Times of London
+Daily Newspaper in London
+01 jan 2017
+3.95
+12
+n
+New York Times
+Daily Newspaper in New York City
+01 jan 2017
+4.95
+22
+n
+Citizen Times
+Daily Newspaper in Asheville
+01 jan 2017
+1.75
+35
+n
+The Times News
+Daily Newspaper in Hendersonville
+01 jan 2017
+0.75
+45
+n
+Hendersonville Lightning
+Weekly Newspaper in Hendersonville
+01 jan 2017
+0.50
+55
+m
+Rolling Stone
+Music and Current Events Magazine
+jan 2017
+4.95
+100
+m
+The Atlantic
+Social Commentary Magazine
+jan 2017
+6.95
+80
+m
+The Smithsonian Magazine
+History and Heritage Magazine
+jan 2017
+9.95
+60
+m
+Better Homes and Gardens
+Home and Garden Magazine
+jan 2017
+4.95
+120
+m
+Wired
+Tech Magazine
+jan 2017
+8.95
+72
