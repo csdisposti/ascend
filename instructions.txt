@@ -1,0 +1,1 @@
+database.properties and videoJKP.txt go in the main project directory, other files in src. A derby databse connection will need to be setup on your machine to get this to work.
