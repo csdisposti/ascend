@@ -1,41 +1,30 @@
 package com.ascend;
 
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-
-import javax.swing.*;
-
+import java.util.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import com.sun.net.httpserver.*;
 /**
  * Created by mrkirkland on 2/27/2017.
  */
-public class Ascend extends JApplet {
-    protected Scene scene;
-    protected Group root;
+public class Ascend{
 
-    @Override
-    public final void init() { // This method is invoked when applet is loaded
-        SwingUtilities.invokeLater( () -> startSwing() );
+    public static void main(String[] args) throws Exception {
+        HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+        server.createContext("/main", new MyHandler());
+        server.setExecutor(null);
+        server.start();
     }
 
-    private void startSwing() { // This method is invoked on Swing thread
-        final JFXPanel Panel = new JFXPanel();
-        add(Panel);
-
-        Platform.runLater( () ->{
-            initFX(Panel);
-            initApplet();
-        } );
-    }
-
-    private void initFX(JFXPanel Panel) { // This method is invoked on JavaFX thread
-        root = new Group();
-        scene = new Scene(root);
-        Panel.setScene(scene);
-    }
-
-    public void initApplet() {
-        // Add custom initialization code here
+    static class MyHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange t) throws IOException {
+            String response = "<this is where the response will go.";
+            t.sendResponseHeaders(200, response.length());
+            OutputStream os = t.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+        }
     }
 }
