@@ -20,7 +20,7 @@ public class Ascend{
     static class MyHandler implements HttpHandler {
         @Override
         public void handle(HttpExchange t) throws IOException {
-            String response = "<this is where the response will go.";
+            String response = new DataBaseReadTest().getTables();
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
             os.write(response.getBytes());
