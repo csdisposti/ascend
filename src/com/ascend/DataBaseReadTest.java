@@ -54,7 +54,7 @@ public class DataBaseReadTest {
         } catch(Exception e) {
             e.printStackTrace();
             System.err.println(prop.getProperty("jdbc.drivers"));
-            return "err";
+            return e.getMessage();
         } finally
         {
         }
