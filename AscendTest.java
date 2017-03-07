@@ -1,12 +1,22 @@
+import java.io.*;
+import java.net.InetSocketAddress;
+import com.sun.net.httpserver.*;
 import java.sql.*;
 import java.util.Scanner;
-import java.io.FileInputStream;
 import java.util.Properties;
-
+import java.io.IOException;
 public class AscendTest {
 
+	private static final String FILENAME = "filename.txt";
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception, IOException {
+
+
+		HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
+		server.createContext("/main", new MyHandler());
+		server.setExecutor(null);
+		server.start();
+
 
 		String username = "MasterAscend";
 		String password = "AscendMasterKey";
@@ -28,29 +38,64 @@ public class AscendTest {
 			String sql;
 
 			//print all from member table
-			sql ="SELECT * FROM tblMember";
+			sql = "SELECT * FROM tblMember";
 			ResultSet rs = stat.executeQuery(sql);
 
 			ResultSetMetaData rsmd = rs.getMetaData();
 
 			int columnsNumber = rsmd.getColumnCount();
+			try (PrintWriter out = new PrintWriter(FILENAME)) {
 
-			while (rs.next()) {
-			//Print one row
-				for(int i = 1 ; i <= columnsNumber; i++){
 
-					System.out.print(String.format("%-28s", rs.getString(i) + " ")); //Print one element of a row
+				while (rs.next()) {
+					//Print one row
+					for (int i = 1; i <= columnsNumber; i++) {
+
+						out.print(String.format("%-28s", rs.getString(i) + " ")); //Print one element of a row
+
+
+					}
+
+					out.println();//Move to the next line to print the next row.
 
 				}
 
-				System.out.println();//Move to the next line to print the next row.
-
+			} finally {
+				conn.close();
 			}
-
 		} finally {
 			conn.close();
 		}
+	}
+	static String readFile(String fileName) throws IOException {
+		BufferedReader br = new BufferedReader(new FileReader(fileName));
+		try {
+			StringBuilder sb = new StringBuilder();
+			String line = br.readLine();
 
+			while (line != null) {
+				sb.append(line);
+				sb.append("\n");
+				line = br.readLine();
+			}
+			return sb.toString();
+		} finally {
+			br.close();
+		}
 	}
 
+	static class MyHandler implements HttpHandler {
+		@Override
+		public void handle(HttpExchange t) throws IOException {
+
+			String response = readFile(FILENAME);
+			t.sendResponseHeaders(200, response.length());
+			OutputStream os = t.getResponseBody();
+			os.write(response.getBytes());
+			os.close();
+		}
+	}
+
+
 }
+
