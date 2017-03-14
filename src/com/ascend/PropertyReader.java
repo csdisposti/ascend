@@ -1,6 +1,4 @@
 package com.ascend;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 /**
@@ -8,17 +6,20 @@ import java.util.Properties;
  */
 class PropertyReader {
     private String file;
-    PropertyReader(String s)
-    {
+    public PropertyReader(String s) {
         this.file = s;
     }
-    Properties readProperties() throws IOException {
+    public Properties getProperties()
+    {
         Properties p = new Properties();
-        InputStream io = getClass().getClassLoader().getResourceAsStream(this.file);
-        if (io != null) {
-            p.load(io);
-        } else {
-            throw new FileNotFoundException("property file: " + this.file + " not found");
+        InputStream in = this.getClass().getResourceAsStream("database.properties");
+        try {
+            p.load(in);
+            in.close();
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+            return null;
         }
         return p;
     }
